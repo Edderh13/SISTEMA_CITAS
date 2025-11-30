@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario - Biocure MX</title>
+
+    <!-- FullCalendar -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: #f5f6f8;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* LEFT SIDEBAR */
+        .sidebar {
+            width: 260px;
+            background: #fff;
+            border-right: 1px solid #ddd;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .menu-item {
+            margin: 15px 0;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .menu-item:hover {
+            color: #0078d4;
+        }
+
+        /* TOP BAR */
+        .topbar {
+            width: 100%;
+            background: #fff;
+            padding: 10px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .filters {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .person {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+        }
+
+        /* MAIN AREA */
+        .main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* CALENDAR */
+        #calendar {
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        /* EVENT STYLE */
+        .fc-event {
+            border-radius: 6px;
+            padding: 4px !important;
+            font-size: 13px;
+            color: #000 !important;
+        }
+
+        .fc-timegrid-slot {
+            height: 65px !important;
+        }
+
+        .fc-col-header-cell-cushion {
+            font-size: 16px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2>Biocure MX - Clínicas</h2>
+        <div class="menu-item">🏠 Inicio</div>
+        <div class="menu-item">📅 Calendario</div>
+        <div class="menu-item">🧑 Pacientes</div>
+        <div class="menu-item">💉 Servicios</div>
+        <div class="menu-item">👩‍⚕️ Personal</div>
+        <div class="menu-item">⚙️ Configuración</div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main">
+
+        <!-- TOP BAR -->
+        <div class="topbar">
+            <div>
+                <button style="background:#0078d4; color:white; border:none; padding:8px 15px; border-radius:4px;">+ Nueva Cita</button>
+            </div>
+
+            <!-- FUTURE staff filters (vacíos por ahora) -->
+            <div class="filters">
+                <!-- Aquí luego pondremos cada nutrióloga -->
+            </div>
+        </div>
+
+        <!-- FULLCALENDAR -->
+        <div id="calendar"></div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            var calendarEl = document.getElementById("calendar");
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: "timeGridWeek",
+                slotMinTime: "07:00:00",
+                slotMaxTime: "20:00:00",
+                nowIndicator: true,
+                allDaySlot: false,
+
+                headerToolbar: {
+                    left: "prev,next today",
+                    center: "title",
+                    right: "dayGridMonth,timeGridWeek,timeGridDay"
+                },
+
+                events: "/citas/api/citas/"  // <-- CALENDARIO VACÍO
+            });
+
+            calendar.render();
+        });
+    </script>
+
+</body>
+</html>
