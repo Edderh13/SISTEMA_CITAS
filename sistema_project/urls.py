@@ -15,4 +15,5 @@ urlpatterns = [
     # apps
     path('usuarios/', include('usuarios.urls')),
     path('citas/', include('citas.urls')),
+    path('admin/', admin.site.urls),
 ]
