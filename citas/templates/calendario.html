@@ -1,169 +1,220 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendario - Biocure MX</title>
+    <title>Biocure MX - Calendario</title>
 
-    <!-- FullCalendar -->
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
+    <!-- FullCalendar v5 (versión estable y sencilla de usar) -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
 
     <style>
-        body {
-            margin: 0;
-            font-family: "Segoe UI", sans-serif;
-            background: #f5f6f8;
-            display: flex;
-            height: 100vh;
-        }
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        background: #f4f7fb;
+        display: flex;
+    }
 
-        /* LEFT SIDEBAR */
-        .sidebar {
-            width: 260px;
-            background: #fff;
-            border-right: 1px solid #ddd;
-            padding: 25px;
-            overflow-y: auto;
-        }
+    .sidebar {
+        width: 250px;
+        background: #0a3d62;
+        color: #fff;
+        height: 100vh;
+        padding-top: 20px;
+        position: fixed;
+        left: 0;
+        top: 0;
+    }
 
-        .sidebar h2 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
+    .sidebar h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: 1px;
+    }
 
-        .menu-item {
-            margin: 15px 0;
-            cursor: pointer;
-            font-size: 16px;
-        }
+    .menu-item {
+        padding: 15px 25px;
+        cursor: pointer;
+        transition: 0.2s;
+        font-size: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+    }
 
-        .menu-item:hover {
-            color: #0078d4;
-        }
+    .menu-item:hover {
+        background: #145a91;
+    }
 
-        /* TOP BAR */
-        .topbar {
-            width: 100%;
-            background: #fff;
-            padding: 10px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid #ddd;
-        }
+    .menu-item a {
+        color: white;
+        text-decoration: none;
+    }
 
-        .filters {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+    .main {
+        margin-left: 250px;
+        padding: 25px;
+        width: calc(100% - 250px);
+    }
 
-        .person {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 14px;
-            cursor: pointer;
-        }
+    h1 {
+        margin-top: 0;
+        font-size: 26px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
 
-        .dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-        }
+    /* =============================
+       ESTILO PROFESIONAL CALENDARIO 
+       ============================= */
 
-        /* MAIN AREA */
-        .main {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
+    #calendar {
+        background: #fff;
+        padding: 20px;
+        border-radius: 14px;
+        box-shadow: 0px 4px 20px rgba(0,0,0,0.08);
+        min-height: 700px;
+    }
 
-        /* CALENDAR */
-        #calendar {
-            padding: 20px;
-            flex-grow: 1;
-        }
+    .fc-toolbar-title {
+        font-size: 22px !important;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
 
-        /* EVENT STYLE */
-        .fc-event {
-            border-radius: 6px;
-            padding: 4px !important;
-            font-size: 13px;
-            color: #000 !important;
-        }
+    .fc-button {
+        background: #0a3d62 !important;
+        border: none !important;
+        font-weight: bold !important;
+        padding: 6px 12px !important;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+    }
 
-        .fc-timegrid-slot {
-            height: 65px !important;
-        }
+    .fc-button:hover {
+        background: #145a91 !important;
+    }
 
-        .fc-col-header-cell-cushion {
-            font-size: 16px;
-            font-weight: 600;
-        }
-    </style>
+    .fc-col-header-cell-cushion {
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 13px;
+        color: #0a3d62;
+        padding: 12px 0 !important;
+        letter-spacing: 1px;
+    }
+
+    .fc-daygrid-day-number {
+        font-weight: bold;
+        color: #666;
+    }
+
+    /* Eventos */
+    .fc-event {
+        border-radius: 8px !important;
+        padding: 4px 6px !important;
+        font-size: 12px !important;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        font-weight: 600;
+    }
+
+    .fc-event:hover {
+        transform: scale(1.02);
+        transition: 0.2s;
+        box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+    }
+
+    /* Vista semana / día */
+    .fc-timegrid-slot-label {
+        font-size: 12px;
+        color: #555;
+        text-transform: uppercase;
+    }
+
+</style>
 </head>
-
 <body>
 
     <!-- SIDEBAR -->
     <div class="sidebar">
-        <h2>Biocure MX - Clínicas</h2>
-        <div class="menu-item">🏠 Inicio</div>
-        <div class="menu-item">📅 Calendario</div>
-        <div class="menu-item">🧑 Pacientes</div>
-        <div class="menu-item">💉 Servicios</div>
-        <div class="menu-item">👩‍⚕️ Personal</div>
-        <div class="menu-item">⚙️ Configuración</div>
+        <h2>Biocure MX</h2>
+
+        <div class="menu-item"><a href="/citas/calendario/">📅 Calendario</a></div>
+        <a href="/citas/nueva/" class="menu-item">Nueva Cita</a>
+        <div class="menu-item"><a href="#">👤 Pacientes</a></div>
+        <div class="menu-item"><a href="#">📄 Historial Clínico</a></div>
+        <div class="menu-item"><a href="#">💉 Servicios / Sueros</a></div>
+        <div class="menu-item"><a href="#">💵 Finanzas</a></div>
+
+        {% if user.rol == "admin" %}
+        <div class="menu-item"><a href="/usuarios/registrar/">👥 Usuarios</a></div>
+        {% endif %}
+
+        <div class="menu-item"><a href="/logout/">🔒 Cerrar Sesión</a></div>
     </div>
 
-    <!-- MAIN CONTENT -->
+    <!-- CONTENIDO PRINCIPAL -->
     <div class="main">
-
-        <!-- TOP BAR -->
-        <div class="topbar">
-            <div>
-                <button style="background:#0078d4; color:white; border:none; padding:8px 15px; border-radius:4px;">+ Nueva Cita</button>
-            </div>
-
-            <!-- FUTURE staff filters (vacíos por ahora) -->
-            <div class="filters">
-                <!-- Aquí luego pondremos cada nutrióloga -->
-            </div>
-        </div>
-
-        <!-- FULLCALENDAR -->
+        <h1>Calendario de Citas</h1>
         <div id="calendar"></div>
-
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
-
+    <!-- SCRIPT DEL CALENDARIO -->
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', function () {
+    var calendarEl = document.getElementById('calendar');
 
-            var calendarEl = document.getElementById("calendar");
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        locale: 'es',
 
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: "timeGridWeek",
-                slotMinTime: "07:00:00",
-                slotMaxTime: "20:00:00",
-                nowIndicator: true,
-                allDaySlot: false,
+        initialView: 'timeGridWeek',
 
-                headerToolbar: {
-                    left: "prev,next today",
-                    center: "title",
-                    right: "dayGridMonth,timeGridWeek,timeGridDay"
-                },
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+        },
 
-                events: "/citas/api/citas/"  // <-- CALENDARIO VACÍO
-            });
+        buttonText: {
+            today: 'HOY',
+            month: 'MES',
+            week: 'SEMANA',
+            day: 'DÍA'
+        },
 
-            calendar.render();
-        });
-    </script>
+        dayHeaderFormat: {
+            weekday: 'short',
+            day: 'numeric'
+        },
+
+        slotLabelFormat: {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: true   // AM/PM activado
+        },
+
+        titleFormat: {
+            month: 'long',
+            day: 'numeric'
+        },
+
+        expandRows: true,
+
+        events: '/citas/api/'
+    });
+
+    calendar.render();
+});
+</script>
+
+
+
 
 </body>
 </html>

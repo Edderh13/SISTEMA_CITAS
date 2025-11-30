@@ -7,5 +7,8 @@ urlpatterns = [
     
     path('calendario/', calendario, name='calendario'),
     path("api/citas/", api_citas, name="api_citas"),
+    path('nueva/', nueva_cita, name='nueva_cita'),
+    path('api/crear/', api_crear_cita, name='api_crear_cita'),
+
 
 ]
