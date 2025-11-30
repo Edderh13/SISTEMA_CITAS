@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.decorators import login_required, user_passes_test
-from .forms import RegistroUsuarioForm
 
 
 def login_view(request):
@@ -10,6 +8,7 @@ def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+
         next_url = request.POST.get('next', '/citas/calendario/')
 
         user = authenticate(request, username=username, password=password)
@@ -24,21 +23,3 @@ def login_view(request):
         })
 
     return render(request, 'login.html', {'next': next_url})
-
-
-def es_admin(user):
-    return user.is_authenticated and user.rol == 'admin'
-
-
-@login_required
-@user_passes_test(es_admin)
-def registrar_usuario(request):
-    if request.method == 'POST':
-        form = RegistroUsuarioForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
-    else:
-        form = RegistroUsuarioForm()
-
-    return render(request, 'usuarios/registrar_usuario.html', {'form': form})
