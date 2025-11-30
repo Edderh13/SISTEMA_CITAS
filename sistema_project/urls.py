@@ -4,16 +4,16 @@ from django.shortcuts import redirect
 from usuarios.views import login_view
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    # ruta principal → redirige al login
+    path('', lambda request: redirect('/login/')),
 
     # login
     path('login/', login_view, name='login'),
 
-    # redirección del root
-    path('', lambda request: redirect('/citas/calendario/')),
-
     # apps
     path('usuarios/', include('usuarios.urls')),
     path('citas/', include('citas.urls')),
+
+    # admin
     path('admin/', admin.site.urls),
 ]

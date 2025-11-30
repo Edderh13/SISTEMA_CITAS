@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-4">Registrar Nueva Cita</h2>
+
+    <div class="card shadow-sm p-4">
+        <form id="formCita">
+            {% csrf_token %}
+
+            <div class="row">
+                {% for field in form %}
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">{{ field.label }}</label>
+                    {{ field }}
+                </div>
+                {% endfor %}
+            </div>
+
+            <button class="btn btn-primary px-4 mt-3" type="submit">Guardar Cita</button>
+            <a href="/citas/calendario/" class="btn btn-secondary px-4 mt-3">Cancelar</a>
+        </form>
+    </div>
+
+    <div id="alerta" class="alert alert-success mt-3 d-none">
+        ✔ Cita creada correctamente
+    </div>
+
+</div>
+
+<script>
+document.getElementById("formCita").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const data = {
+        nutriologa: document.getElementById("id_nutriologa").value,
+        paciente: document.getElementById("id_paciente").value,
+        servicio: document.getElementById("id_servicio").value,
+        fecha: document.getElementById("id_fecha").value,
+        hora_inicio: document.getElementById("id_hora_inicio").value,
+        hora_fin: document.getElementById("id_hora_fin").value,
+        notas: document.getElementById("id_notas").value,
+    };
+
+    const response = await fetch("/citas/api/crear/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+
+    if (result.status === "ok") {
+        document.getElementById("alerta").classList.remove("d-none");
+
+        // Guardado → regresar al calendario después de 1 segundo
+        setTimeout(() => {
+            window.location.href = "/citas/calendario/";
+        }, 800);
+    }
+});
+</script>
+
+{% endblock %}
