@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Servicios</h1>
+
+<a href="/servicios/nuevo/" style="
+    padding:10px 15px;
+    background:#2563eb;
+    color:white;
+    border-radius:6px;
+    text-decoration:none;">
+    ➕ Nuevo Servicio
+</a>
+
+<table style="width:100%;margin-top:20px;border-collapse:collapse;">
+    <tr style="background:#e5e7eb;">
+        <th style="padding:10px;">Nombre</th>
+        <th style="padding:10px;">Precio</th>
+        <th style="padding:10px;">Duración</th>
+        <th style="padding:10px;">Acciones</th>
+    </tr>
+
+    {% for s in servicios %}
+    <tr>
+        <td style="padding:10px;">{{ s.nombre }}</td>
+        <td style="padding:10px;">${{ s.precio }}</td>
+        <td style="padding:10px;">{{ s.duracion }} min</td>
+        <td style="padding:10px;">
+            <a href="/servicios/editar/{{ s.id }}/" style="color:#2563eb;">Editar</a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4" style="padding:20px;text-align:center;">No hay servicios registrados.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

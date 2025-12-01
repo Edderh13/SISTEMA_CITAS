@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Pacientes</h1>
+
+<input type="text" placeholder="Buscar por nombre o teléfono" style="padding:8px;width:300px;border-radius:6px;border:1px solid #ccc;">
+
+<table style="width:100%;margin-top:20px;border-collapse:collapse;">
+    <tr style="background:#e5e7eb;">
+        <th style="padding:10px;">Nombre</th>
+        <th style="padding:10px;">Teléfono</th>
+        <th style="padding:10px;">Acciones</th>
+    </tr>
+
+    {% for p in pacientes %}
+    <tr>
+        <td style="padding:10px;">{{ p.nombre }}</td>
+        <td style="padding:10px;">{{ p.telefono }}</td>
+        <td style="padding:10px;">
+            <a href="#" style="color:#2563eb;">Ver historial</a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3" style="padding:20px;text-align:center;">No hay pacientes registrados.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}

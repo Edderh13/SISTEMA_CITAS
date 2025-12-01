@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     # Tus apps
     'usuarios',
     'citas',
+    'pacientes',
+    'servicios',
+
 ]
 
 MIDDLEWARE = [

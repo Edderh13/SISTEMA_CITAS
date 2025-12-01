@@ -1,0 +1,171 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Estadísticas de Servicios</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            font-family: 'Inter', sans-serif;
+            background: #f2f4f7;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #111827;
+            color: white;
+            height: 100vh;
+            padding: 20px;
+            position: fixed;
+        }
+
+        .sidebar a {
+            color: #d1d5db;
+            display: block;
+            padding: 12px;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            background: #2563eb;
+            border-radius: 6px;
+        }
+
+        .main {
+            width: calc(100% - 250px);
+            margin-left: 260px;
+            padding: 30px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h2 style="text-align:center;">BIOCURE</h2>
+
+    <a href="/citas/calendario/">🏠 Home</a>
+    <a href="/pacientes/">👤 Pacientes</a>
+    <a href="/servicios/">🧪 Servicios</a>
+    <a href="/servicios/estadisticas/">📊 Estadísticas</a>
+    <a href="/servicios/finanzas/">💰 Finanzas</a>
+</div>
+
+<div class="main">
+
+    <h1>Estadísticas de Servicios</h1>
+
+    <!-- Top Servicios más usados -->
+    <div class="card">
+        <h2>Servicios más utilizados</h2>
+        <canvas id="topUso"></canvas>
+    </div>
+
+    <!-- Ingreso por servicio -->
+    <div class="card">
+        <h2>Ingresos por Servicio</h2>
+        <canvas id="ingreso"></canvas>
+    </div>
+
+    <!-- Tendencia -->
+    <div class="card">
+        <h2>Tendencia mensual de ingresos</h2>
+        <canvas id="tendencia"></canvas>
+    </div>
+
+</div>
+
+<script>
+    // ===========================
+    // 1) BARRAS – Servicios más usados
+    // ===========================
+    var ctx1 = document.getElementById("topUso").getContext("2d");
+
+    const gradient1 = ctx1.createLinearGradient(0, 0, 0, 300);
+    gradient1.addColorStop(0, "#3FA9F5");
+    gradient1.addColorStop(1, "#1A365D");
+
+    new Chart(ctx1, {
+        type: "bar",
+        data: {
+            labels: [{% for s in top_uso %}"{{ s.nombre }}",{% endfor %}],
+            datasets: [{
+                label: "Usos",
+                data: [{% for s in top_uso %}{{ s.total }},{% endfor %}],
+                backgroundColor: gradient1,
+                borderRadius: 8
+            }]
+        }
+    });
+
+    // ===========================
+    // 2) PASTEL – Ingreso por servicio
+    // ===========================
+    new Chart(document.getElementById("ingreso"), {
+        type: "pie",
+        data: {
+            labels: [{% for s in top_ingresos %}"{{ s.nombre }}",{% endfor %}],
+            datasets: [{
+                data: [{% for s in top_ingresos %}{{ s.ing }},{% endfor %}],
+                backgroundColor: [
+                    "#3FA9F5",
+                    "#10B981",
+                    "#EC4899",
+                    "#FBBF24",
+                    "#8B5CF6"
+                ]
+            }]
+        }
+    });
+
+    // ===========================
+    // 3) LÍNEA – Tendencia mensual
+    // ===========================
+    var ctx3 = document.getElementById("tendencia").getContext("2d");
+
+    const gradient2 = ctx3.createLinearGradient(0, 0, 0, 300);
+    gradient2.addColorStop(0, "#10B981");
+    gradient2.addColorStop(1, "rgba(16,185,129,0)");
+
+    new Chart(ctx3, {
+        type: "line",
+        data: {
+            labels: [{% for t in tendencia %}"{{ t.mes|date:'M Y' }}",{% endfor %}],
+            datasets: [{
+                label: "Ingresos",
+                data: [{% for t in tendencia %}{{ t.total }},{% endfor %}],
+                fill: true,
+                tension: 0.4,
+                borderColor: "#10B981",
+                backgroundColor: gradient2,
+                borderWidth: 3
+            }]
+        }
+    });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nueva Membresía</title>
+</head>
+
+<body style="margin-left:260px; font-family:Inter;">
+
+    <h1>Crear Nueva Membresía</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Nombre de la membresía:</label><br>
+        <input type="text" name="nombre" required><br><br>
+
+        <label>Descripción:</label><br>
+        <textarea name="descripcion" rows="4"></textarea><br><br>
+
+        <label>Precio total:</label><br>
+        <input type="number" name="precio" step="0.01" required><br><br>
+
+        <h3>Servicios incluidos:</h3>
+        {% for s in servicios %}
+            <label>{{ s.nombre }} (Cantidad):</label>
+            <input type="number" min="0" name="servicio_{{ s.id }}" value="0"><br><br>
+        {% endfor %}
+
+        <button type="submit">Guardar Membresía</button>
+    </form>
+
+</body>
+</html>
