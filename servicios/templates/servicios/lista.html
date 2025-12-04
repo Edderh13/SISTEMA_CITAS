@@ -1,36 +1,51 @@
-{% extends "base.html" %}
+{% extends "base_panel.html" %}
+
+{% block title %}Servicios | BIOCURE MX{% endblock %}
 
 {% block content %}
-<h1>Servicios</h1>
+    <h1 class="page-title">SERVICIOS</h1>
+    <p class="page-subtitle">
+        Catálogo de servicios disponibles en Biocure MX.
+    </p>
 
-<a href="/servicios/nuevo/" style="
-    padding:10px 15px;
-    background:#2563eb;
-    color:white;
-    border-radius:6px;
-    text-decoration:none;">
-    ➕ Nuevo Servicio
-</a>
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">LISTA DE SERVICIOS</span>
+            <button class="btn-primary" onclick="window.location.href='/servicios/nuevo/'">
+                + Nuevo servicio
+            </button>
+        </div>
 
-<table style="width:100%;margin-top:20px;border-collapse:collapse;">
-    <tr style="background:#e5e7eb;">
-        <th style="padding:10px;">Nombre</th>
-        <th style="padding:10px;">Precio</th>
-        <th style="padding:10px;">Duración</th>
-        <th style="padding:10px;">Acciones</th>
-    </tr>
-
-    {% for s in servicios %}
-    <tr>
-        <td style="padding:10px;">{{ s.nombre }}</td>
-        <td style="padding:10px;">${{ s.precio }}</td>
-        <td style="padding:10px;">{{ s.duracion }} min</td>
-        <td style="padding:10px;">
-            <a href="/servicios/editar/{{ s.id }}/" style="color:#2563eb;">Editar</a>
-        </td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="4" style="padding:20px;text-align:center;">No hay servicios registrados.</td></tr>
-    {% endfor %}
-</table>
+        <table>
+            <thead>
+                <tr>
+                    <th>Servicio</th>
+                    <th>Precio</th>
+                    <th>Duración</th>
+                    <th>Activo</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in servicios %}
+                    <tr>
+                        <td>{{ s.nombre }}</td>
+                        <td>${{ s.precio }}</td>
+                        <td>{{ s.duracion }} min</td>
+                        <td>{% if s.activo %}Sí{% else %}No{% endif %}</td>
+                        <td>
+                            <button class="btn-link"
+                                    onclick="window.location.href='/servicios/editar/{{ s.id }}/'">
+                                Editar
+                            </button>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5">No hay servicios registrados todavía.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

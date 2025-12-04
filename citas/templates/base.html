@@ -4,23 +4,23 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Biocure — Sistema</title>
-
-    <!-- FullCalendar solo se carga cuando una página lo requiere -->
-    {% block extra_css %}{% endblock %}
-    {% block extra_js_head %}{% endblock %}
+    <title>{% block title %}BIOCURE MX{% endblock %}</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             padding: 0;
             display: flex;
             height: 100vh;
-            font-family: 'Inter', sans-serif;
-            background: #f2f4f7;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f3f4f6;
         }
 
-        /* Sidebar */
+        /* SIDEBAR */
         .sidebar {
             width: 250px;
             background: #111827;
@@ -35,73 +35,228 @@
         .logo {
             text-align: center;
             font-size: 22px;
-            font-weight: bold;
+            font-weight: 800;
             margin-bottom: 30px;
+            letter-spacing: .08em;
         }
 
         .menu {
             list-style: none;
             padding: 0;
+            margin: 0;
         }
 
         .menu li {
-            margin: 15px 0;
+            margin: 4px 0;
         }
 
         .menu a {
             display: block;
-            padding: 12px 20px;
+            padding: 11px 20px;
             color: #d1d5db;
-            font-size: 16px;
+            font-size: 15px;
             text-decoration: none;
-            transition: 0.2s;
+            transition: 0.18s;
+            border-radius: 8px;
         }
 
         .menu a:hover {
             background: #2563eb;
             color: #fff;
-            border-radius: 6px;
         }
 
+        .menu a.active {
+            background: #1d4ed8;
+            color: #fff;
+        }
+
+        .menu-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #6b7280;
+            padding: 10px 20px 4px;
+        }
+
+        /* CONTENIDO PRINCIPAL */
         .main {
             flex: 1;
-            padding: 20px;
-            margin-left: 250px;
+            padding: 22px 24px;
             overflow-y: auto;
+            margin-left: 250px; /* deja espacio al sidebar fijo */
         }
 
-        h1 {
-            margin-top: 0;
+        .page-title {
+            margin: 0 0 16px 0;
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
         }
+
+        .page-subtitle {
+            margin: 0 0 18px 0;
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 16px 18px;
+            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: #111827;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 9px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-link {
+            background: transparent;
+            border: none;
+            padding: 0;
+            margin: 0;
+            color: #2563eb;
+            font-size: 13px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th, td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
+        th {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #6b7280;
+        }
+
+        tr:hover td {
+            background: #f9fafb;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 7px 9px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            font-size: 13px;
+        }
+
+        label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #4b5563;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .form-row .col {
+            flex: 1;
+        }
+
+        .mt-2 { margin-top: 8px; }
+        .mt-3 { margin-top: 12px; }
+        .mt-4 { margin-top: 16px; }
     </style>
+
+    {% block extra_head %}{% endblock %}
 </head>
 
 <body>
 
-    <!-- SIDEBAR -->
+    <!-- SIDEBAR ÚNICO -->
     <div class="sidebar">
-        <h2 class="logo">BIOCURE</h2>
+        <h2 class="logo">BIOCURE MX</h2>
 
+        <div class="menu-section-title">Panel</div>
         <ul class="menu">
-            <li><a href="/citas/calendario/">🏠 Home</a></li>
-            <li><a href="/pacientes/">👤 Pacientes</a></li>
-            <li><a href="/servicios/">🧪 Servicios</a></li>
+            <li>
+                <a href="/citas/calendario/" class="{% if request.path.startswith '/citas/calendario' %}active{% endif %}">
+                    🏠 Home
+                </a>
+            </li>
+            <li>
+                <a href="/pacientes/" class="{% if request.path.startswith '/pacientes' %}active{% endif %}">
+                    👤 Pacientes
+                </a>
+            </li>
+            <li>
+                <a href="/servicios/" class="{% if request.path.startswith '/servicios' %}active{% endif %}">
+                    🧪 Servicios
+                </a>
+            </li>
+        </ul>
 
+        <div class="menu-section-title">Administración</div>
+        <ul class="menu">
             {% if request.user.is_authenticated and request.user.rol == 'admin' %}
-            <li><a href="/usuarios/registrar/">🔐 Registro de Usuarios</a></li>
+            <li>
+                <a href="/usuarios/registrar/" class="{% if request.path.startswith '/usuarios/registrar' %}active{% endif %}">
+                    🔐 Registro de Usuarios
+                </a>
+            </li>
             {% endif %}
-
-            <li><a href="/configuracion/">⚙️ Configuración</a></li>
-            <li><a href="/finanzas/">💰 Finanzas</a></li>
+            <li>
+                <a href="#" >
+                    ⚙️ Configuración
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    💰 Finanzas
+                </a>
+            </li>
         </ul>
     </div>
 
+    <!-- CONTENIDO (cada página mete aquí lo suyo) -->
     <div class="main">
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
     </div>
 
     {% block extra_js %}{% endblock %}
-
 </body>
 </html>

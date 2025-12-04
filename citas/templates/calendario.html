@@ -1,22 +1,57 @@
-{% extends "base.html" %}
+{% extends "base_panel.html" %}
+{% load static %}
 
-{% block extra_css %}
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
-{% endblock %}
+{% block title %}Calendario de Citas | BIOCURE MX{% endblock %}
 
-{% block extra_js_head %}
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+{% block extra_head %}
+    <!-- FullCalendar (GLOBAL MODE) -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+    <style>
+        #calendar {
+            margin-top: 10px;
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 12px;
+            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+        }
+
+        .fc-toolbar-title {
+            font-size: 16px !important;
+            font-weight: 700 !important;
+            letter-spacing: .08em;
+        }
+
+        .fc .fc-button {
+            text-transform: uppercase;
+            font-size: 11px;
+            border-radius: 999px;
+        }
+
+        .fc-timegrid-slot-label {
+            text-transform: lowercase;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
-<h1>CALENDARIO DE CITAS</h1>
-<div id="calendar"></div>
+    <h1 class="page-title">CALENDARIO DE CITAS</h1>
+    <p class="page-subtitle">
+        Visualiza y gestiona las citas de todas tus sucursales.
+    </p>
+
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">AGENDA SEMANAL</span>
+        </div>
+        <div id="calendar"></div>
+    </div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-
     var calendarEl = document.getElementById("calendar");
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -48,11 +83,14 @@ document.addEventListener("DOMContentLoaded", function () {
         events: "/citas/api/citas/",
 
         dateClick: function (info) {
-            window.location.href = `/citas/nueva/?fecha=${info.dateStr}`;
+            let fecha = info.dateStr;
+            window.location.href = `/citas/nueva/?fecha=${fecha}`;
         },
 
         select: function (info) {
-            window.location.href = `/citas/nueva/?inicio=${info.startStr}&fin=${info.endStr}`;
+            let inicio = info.startStr;
+            let fin = info.endStr;
+            window.location.href = `/citas/nueva/?inicio=${inicio}&fin=${fin}`;
         }
     });
 

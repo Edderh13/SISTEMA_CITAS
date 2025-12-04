@@ -1,27 +1,53 @@
-{% extends "base.html" %}
+{% extends "base_panel.html" %}
+
+{% block title %}Pacientes | BIOCURE MX{% endblock %}
 
 {% block content %}
-<h1>Pacientes</h1>
+    <h1 class="page-title">PACIENTES</h1>
+    <p class="page-subtitle">
+        Lista de todos los pacientes registrados. Puedes buscar por nombre o teléfono.
+    </p>
 
-<input type="text" placeholder="Buscar por nombre o teléfono" style="padding:8px;width:300px;border-radius:6px;border:1px solid #ccc;">
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">LISTADO</span>
+            <!-- Aquí luego puedes poner un botón "Nuevo Paciente" -->
+        </div>
 
-<table style="width:100%;margin-top:20px;border-collapse:collapse;">
-    <tr style="background:#e5e7eb;">
-        <th style="padding:10px;">Nombre</th>
-        <th style="padding:10px;">Teléfono</th>
-        <th style="padding:10px;">Acciones</th>
-    </tr>
+        <form method="get" class="mt-2">
+            <div class="form-row">
+                <div class="col">
+                    <label>Buscar</label>
+                    <input type="text" name="q" value="{{ request.GET.q }}" placeholder="Nombre o teléfono...">
+                </div>
+            </div>
+        </form>
 
-    {% for p in pacientes %}
-    <tr>
-        <td style="padding:10px;">{{ p.nombre }}</td>
-        <td style="padding:10px;">{{ p.telefono }}</td>
-        <td style="padding:10px;">
-            <a href="#" style="color:#2563eb;">Ver historial</a>
-        </td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="3" style="padding:20px;text-align:center;">No hay pacientes registrados.</td></tr>
-    {% endfor %}
-</table>
+        <div class="mt-3">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Correo</th>
+                        <th>Fecha registro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in pacientes %}
+                        <tr>
+                            <td>{{ p.nombre }}</td>
+                            <td>{{ p.telefono }}</td>
+                            <td>{{ p.correo }}</td>
+                            <td>{{ p.fecha_registro|date:"d/m/Y" }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4">No hay pacientes registrados.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
